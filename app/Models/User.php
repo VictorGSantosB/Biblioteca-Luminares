@@ -25,6 +25,11 @@ class User extends Authenticatable
         'adm'
     ];
 
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

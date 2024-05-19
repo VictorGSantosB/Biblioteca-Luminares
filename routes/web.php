@@ -5,22 +5,24 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Rota da página inicial
 Route::get('/', [BibliotecaController::class, 'index'])->name('dashboard');
 
-
-
-
-Route::resource('users', UserController::class);
-
+// Rotas de autenticação
 Route::get('/login', [LoginController::class, 'index'])->name('login.form');
 Route::post('/logar', [LoginController::class, 'auth'])->name('login.auth');
-Route::get('/logar', [LoginController::class, 'logout'])->name('login.logout');
-Route::get('/register', [LoginController::class, 'register'])->name('login.register');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/register', [LoginController::class, 'register'])->name('register.form');
 
+// Rotas protegidas por autenticação
+Route::middleware(['auth'])->group(function () {
+    // Rotas relacionadas aos livros
+    Route::get('/book', [BibliotecaController::class, 'create'])->name('book.form');
+    Route::post('/book/cadastro', [BibliotecaController::class, 'store'])->name('book.store');
+    Route::get('/book/delete/{id}', [BibliotecaController::class, 'destroy'])->name('book.delete');
+    Route::get('/book/edit/{id}', [BibliotecaController::class, 'edit'])->name('book.edit');
+    Route::put('/book/update/{id}', [BibliotecaController::class, 'update'])->name('book.update');
 
-Route::get('/modal', [LoginController::class, 'modal'])->name('login.modal');
-
-
-
-Route::get('/teste', [BibliotecaController::class, 'form'])->name('teste');
-Route::post('/cad', [BibliotecaController::class, 'store'])->name('storeTeste');
+    // Rotas relacionadas aos usuários
+    Route::get('/users', [UserController::class, 'index'])->name('user.index');
+});

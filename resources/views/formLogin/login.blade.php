@@ -65,7 +65,7 @@
                     </form>
                     <div class="text-center text-gray-400">
                         Ainda não tem um conta?
-                        <a href="{{ route('login.register') }}" class="font-bold text-black">Cadastra-se gratis</a>
+                        <a href="{{ route('register.form') }}" class="font-bold text-black">Cadastra-se gratis</a>
                     </div>
                 </div>
                 <!-- {/* right side */} -->

@@ -1,4 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Rosario:ital,wght@0,300..700;1,300..700&display=swap");
-*{
+* {
     font-family: "Rosario", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+@media (width: 820px) {
+    .respo {
+        margin: 0 auto;
+    }
+}
+
+.swal2-backdrop-custom {
+    background-size: 20%;
 }

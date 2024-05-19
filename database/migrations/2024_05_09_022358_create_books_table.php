@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('author');
             $table->string('isbn');
-
+            $table->string('image');
             $table->unsignedBigInteger('user_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
