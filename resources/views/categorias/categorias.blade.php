@@ -26,14 +26,13 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @php
                             $categoriasOrdenadas = $categorias->sortByDesc(function($categoria) {
                                 return $categoria->books->count();
                             });
                         @endphp
                         @foreach ($categoriasOrdenadas as $c)
-                            <tr class="bg-white border-b dark:border-gray-700">
+                            <tr class="bg-white border-b dark:border-gray-700 @if($loop->first) bg-green-200 @endif">
                                 <td class="px-6 py-4">{{ $c->id }}</td>
                                 <td class="px-6 py-4">{{ $c->nome }}</td>
                                 <td class="px-6 py-4">{{ $c->books->count() }}</td>
@@ -46,6 +45,7 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    
                 </table>
             </div>
         </div>

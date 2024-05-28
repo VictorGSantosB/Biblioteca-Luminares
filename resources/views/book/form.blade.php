@@ -18,10 +18,10 @@
                         <input required
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white @error('image') border-red-500 @enderror"
                             name="image" id="image" type="file" accept="image/*">
+                            @error('image')
+                            <p class="absolute top-full left-0 mt-[-20px] text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
                         </div>
-                        @error('image')
-                            <span class="absolute top-full left-0 mt-[-20px] text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
                     <div class="pb-6 relative">
                         <label class="block text-black text-sm font-bold mb-2" for="nome">
                             Nome*
