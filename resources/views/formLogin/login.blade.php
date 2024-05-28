@@ -74,7 +74,7 @@
                 </div>
                 <!-- {/* right side */} -->
                 <div class="relative">
-                    <img src="{{ asset('img/LUMINARES.png') }}" alt="img"
+                    <img style="background-size: cover" src="{{ asset('img/NAVBARLOGO.png') }}" alt="img"
                         class="w-[100%] h-full hidden rounded-r-2xl md:block object-cover" />
                 </div>
             </div>
