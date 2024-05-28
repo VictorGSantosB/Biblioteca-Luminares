@@ -28,7 +28,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/')->with('success-login', 'Seja bem vindo!');
         } else {
-            return redirect()->route('login.form')->with('error', 'Usuario ou senha incorreto');
+            return redirect()->route('login')->with('error', 'Usuario ou senha incorreto');
         }
     }
 
@@ -50,7 +50,7 @@ class LoginController extends Controller
 
 
     public function register()
-    {
-        return view('formLogin.create');
+    {   
+        
     }
 }

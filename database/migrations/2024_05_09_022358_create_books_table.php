@@ -17,9 +17,14 @@ return new class extends Migration
             $table->string('author');
             $table->string('isbn');
             $table->string('image');
+            $table->text('descricao');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('categoria_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
+
+            
             $table->timestamps();
         });
     }

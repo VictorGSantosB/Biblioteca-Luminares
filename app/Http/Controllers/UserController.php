@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('formLogin.create');
     }
 
     /**
@@ -37,8 +37,6 @@ class UserController extends Controller
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string',
-        'cpf' => 'required|string|max:14|unique:users,cpf',
-        'telefone' => 'required|string|max:15',
     ]);
 
     $messages = [
@@ -47,11 +45,7 @@ class UserController extends Controller
         'email.email' => 'O formato do email é inválido.',
         'email.unique' => 'Este email já está em uso.',
         'password.required' => 'O campo senha é obrigatório.',
-        'cpf.required' => 'O campo CPF é obrigatório.',
-        'cpf.max' => 'O CPF deve ter no máximo :max caracteres.',
-        'cpf.unique' => 'Este CPF já está em uso.',
-        'telefone.required' => 'O campo telefone é obrigatório.',
-        'telefone.max' => 'O telefone deve ter no máximo :max caracteres.',
+        
     ];
 
     $validator->setCustomMessages($messages);
@@ -64,7 +58,7 @@ class UserController extends Controller
     $user['password'] = bcrypt($request->password);
 
     $user = User::create($user);
-    Auth::login($user);
+    Auth::login($user); 
 
     return redirect()->route('dashboard');
 }

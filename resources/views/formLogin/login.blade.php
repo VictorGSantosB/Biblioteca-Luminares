@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
 
 <body>
@@ -33,24 +35,26 @@
                             <span class="text-red-500 text-sm">{{ session('error') }}</span>
                         </div>
                     @endif
-                    <form action="{{ route('login.auth') }}" method="POST">
+                    <form action="{{ route('login.auth') }}" method="POST" data-parsley-validate>
                         @csrf
                         <div class="py-4 relative">
                             <span class="mb-2 text-md">Email</span>
-                            <input type="text"
+                            <input required type="text"
                                 class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500 @error('email') border-red-500 @enderror"
                                 name="email" id="email" value="{{ old('email') }}" />
                             @error('email')
-                                <span class="absolute top-full left-0 mt-[-10px] text-red-500 text-sm">{{ $message }}</span>
+                                <span
+                                    class="absolute top-full left-0 mt-[-10px] text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="py-4 relative">
                             <span class="mb-2 text-md">Password</span>
-                            <input type="password" name="password" id="pass"
+                            <input required type="password" name="password" id="pass"
                                 class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500 @error('password') border-red-500 @enderror" />
-                                @error('password')
-                                <span class="absolute top-full left-0 mt-[-10px] text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
+                            @error('password')
+                                <span
+                                    class="absolute top-full left-0 mt-[-10px] text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="flex justify-between w-full py-4">
                             <div class="mr-24">
@@ -65,16 +69,28 @@
                     </form>
                     <div class="text-center text-gray-400">
                         Ainda não tem um conta?
-                        <a href="{{ route('register.form') }}" class="font-bold text-black">Cadastra-se gratis</a>
+                        <a href="{{ route('users.form') }}" class="font-bold text-black">Cadastra-se gratis</a>
                     </div>
                 </div>
                 <!-- {/* right side */} -->
                 <div class="relative">
-                    <img src="{{ asset('img/NAVBARLOGO.png') }}" alt="img"
+                    <img src="{{ asset('img/LUMINARES.png') }}" alt="img"
                         class="w-[100%] h-full hidden rounded-r-2xl md:block object-cover" />
                 </div>
             </div>
         </div>
+        <script src="{{ asset('jquery/dist/jquery.js') }}"></script>
+        <script src="{{ asset('parsleyjs/dist/parsley.min.js') }}"></script>
+        <script src="{{ asset('parsleyjs/dist/i18n/pt-br.js') }}"></script>
+        @if (session('noAuth'))
+            <script>
+                Swal.fire({
+                    title: "{{ session('noAuth') }}",
+                    text: "",
+                    icon: "warning"
+                });
+            </script>
+        @endif
     @endif
 </body>
 

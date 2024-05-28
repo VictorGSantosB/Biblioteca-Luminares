@@ -13,7 +13,8 @@ class Book extends Model
         'author',
         'isbn',
         'user_id',
-        'image'
+        'image',
+        'categoria_id'
     ];
 
 
@@ -21,5 +22,11 @@ class Book extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
+
     use HasFactory;
 }

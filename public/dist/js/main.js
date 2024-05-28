@@ -1,5 +1,9 @@
-const navLinks = document.querySelector('.nav-links')
-function onToggleMenu(e) {
-    e.name = e.name === 'menu' ? 'close' : 'menu'
-    navLinks.classList.toggle('top-[12%]')
-}
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     var dropdownBtn = document.getElementById('dropdown-btn');
+//     var dropdownMenu = document.getElementById('dropdown-menu');
+    
+//     dropdownBtn.addEventListener('click', function () {
+//         dropdownMenu.classList.toggle('hidden');
+//     });
+// });

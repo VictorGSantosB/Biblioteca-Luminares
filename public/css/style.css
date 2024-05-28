@@ -10,12 +10,22 @@
     display: block;
 }
 
+
 @media (width: 820px) {
     .respo {
         margin: 0 auto;
     }
 }
 
-.swal2-backdrop-custom {
-    background-size: 20%;
+.parsley-errors-list {
+    color: red;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+
+}
+
+.parsley-error {
+    border-color: red !important;
 }
