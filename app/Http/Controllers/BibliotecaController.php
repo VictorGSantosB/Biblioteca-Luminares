@@ -24,18 +24,26 @@ class BibliotecaController extends Controller
 
     public function create()
     {
+       if(Auth::id() === 1){
         $categorias = Categoria::all();
         return view('book.form', [
             'categorias' => $categorias
         ]);
+       }else{
+        return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+       }
     }
 
     public function edit($id)
     {
-        $book = Book::find($id);
-        return view('book.formUpdate', [
-            'book' => $book
-        ]);
+        if (Auth::id() === 1) {
+            $book = Book::find($id);
+            return view('book.formUpdate', [
+                'book' => $book
+            ]);
+        }else{
+            return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+        }
     }
 
     public function store(Request $request)
@@ -110,7 +118,7 @@ class BibliotecaController extends Controller
     public function show($id)
     {
         $book = Book::find($id);
-        if($book){
+        if ($book) {
             return view('book.show', [
                 'book' => $book
             ]);
@@ -119,8 +127,8 @@ class BibliotecaController extends Controller
 
 
     public function categoria($id)
-    {   
-        if(Auth::check()){
+    {
+        if (Auth::check()) {
             $books = Book::where('categoria_id', $id)->get();
             $categorias = Categoria::all();
             $categoria = Categoria::find($id);
@@ -130,27 +138,24 @@ class BibliotecaController extends Controller
                 'categoria' => $categoria,
             ]);
         }
-            return redirect()->route('login.form')->with('noAuth', 'Faça login para acessar todos os recursos do sistema');
-        
+        return redirect()->route('login.form')->with('noAuth', 'Faça login para acessar todos os recursos do sistema');
     }
 
 
 
     public function modalDelete(Request $request)
-    {
+    {   if(Auth::id() === 1){
+        
         if ($request->id) {
             $id = $request->id;
             return redirect()->back()->with('delete', $id);
+        }else{
+            return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
         }
+    }else{
+        return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+    }
     }
 
-    public function modalUpdate(Request $request)
-    {
-        if ($request->id) {
-            $id = $request->id;
-            return redirect()->back()->with('updateModal', $id);
-        } else {
-            return redirect()->back();
-        }
-    }
+
 }

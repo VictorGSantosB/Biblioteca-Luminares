@@ -33,7 +33,7 @@
                     <li><a class="hover:text-gray-500" href="{{ route('categoria.index') }}">Categorias</a></li>
                     @if (Auth::id() === 1)
                         <li><a class="hover:text-gray-500" href="{{ route('book.create') }}">Cadastrar Livro</a></li>
-                        <li><button onclick="openModal()" class="hover:text-gray-500">Cadastrar categoria</button></li>
+                    
                     @endif
                     @auth
                     <li>
@@ -52,9 +52,16 @@
                                                 </li>
                                             @endforeach
                                         @else
-                                            <li class="">
-                                                <button onclick="openModal()" class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap w-[100%]" style="white-space: nowrap;">Cadastre novas categorias</button>
-                                            </li>
+                                                @if (Auth::id() === 1)
+                                                <li class="">
+                                                    <button onclick="openModal()" class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap w-[100%]" style="white-space: nowrap;">Cadastre novas categorias</button>
+                                                </li>
+                                                @else
+                                                <li class="">
+                                                    <button disabled class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap w-[100%]" style="white-space: nowrap;">Não há categorias cadastradas</button>
+                                                </li>
+                                                @endif
+                                         
                                         @endif
                                     </ul>
                                 </div>
@@ -99,26 +106,11 @@
 </nav>
 </header>
 
-<script>
-    const navLinks = document.querySelector('.nav-links')
 
-    function onToggleMenu(e) {
-        e.name = e.name === 'menu' ? 'close' : 'menu'
-        navLinks.classList.toggle('top-[12%]')
-    }
-
-    function openModal() {
-        document.getElementById('categoryModal').classList.remove('hidden');
-    }
-
-    function closeModal() {
-        document.getElementById('categoryModal').classList.add('hidden');
-    }
-</script>
 
 @yield('content')
 
-<footer class="bg-white py-4 px-4 text-center">
+<footer class="bg-white py-4 px-4 text-center absolute z-40 w-full">
     <h4 class="text-2xl font-semibold text-blueGray-700">Biblioteca Luminares</h4>
     <p class="text-base text-blueGray-600">Ache os melhores livros!</p>
     <div class="mt-4 flex justify-center">
@@ -159,7 +151,8 @@
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Sim,quero sair"
+            confirmButtonText: "Sim,quero sair",
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "{{ route('login.logout') }}";
@@ -167,6 +160,9 @@
         });
     </script>
 @endif
+
+
+
 @if (session('delete'))
     <script>
         Swal.fire({
@@ -176,13 +172,23 @@
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Sim,quero deletar"
+            confirmButtonText: "Sim,quero deletar",
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "{{ route('book.delete', Session::get('delete')) }}";
             }
         });
     </script>
+@endif
+@if (session('admInvalid'))
+<script>
+    Swal.fire({
+        title: "Faill",
+        text: "{{ Session::get('admInvalid') }}",
+        icon: "warning"
+    })
+</script>
 @endif
 @if (session('successDelete'))
     <script>
@@ -269,6 +275,22 @@
     </div>
 </div>
 </div>
+<script>
+    const navLinks = document.querySelector('.nav-links')
+
+    function onToggleMenu(e) {
+        e.name = e.name === 'menu' ? 'close' : 'menu'
+        navLinks.classList.toggle('top-[12%]')
+    }
+
+    function openModal() {
+        document.getElementById('categoryModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('categoryModal').classList.add('hidden');
+    }
+</script>
 </body>
 
 </html>

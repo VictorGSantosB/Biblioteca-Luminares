@@ -30,5 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/book/categoria/{id}', [BibliotecaController::class, 'categoria'])->name('book.categoria');
     Route::get('/books/categorias', [CategoriaController::class, 'index'])->name('categoria.index');
     Route::post('/book/categorias/form', [CategoriaController::class, 'store'])->name('categoria.store');
+    Route::post('/book/categorias/update', [CategoriaController::class, 'update'])->name('categoria.update');
     Route::get('/logout/modal', [LoginController::class, 'modal'])->name('login.modal');
 });

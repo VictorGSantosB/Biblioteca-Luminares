@@ -21,7 +21,7 @@ class LoginController extends Controller
         ], [
             'email.required' => 'O email é um campo obrigatorio!',
             'email.email' => 'Digite um email valido',
-            'password.required' => 'O campo senha é obrigatorio',
+            'password.required' => 'O campo senha é obrigatorio!',
         ]);
 
         if (Auth::attempt($credenciais, $request->remember)) {
@@ -37,6 +37,8 @@ class LoginController extends Controller
         if ($request->id) {
             $user = auth()->user()->name;
             return redirect()->back()->with('logout', 'Ate qualquer dia leitor, ' . $user . '!');
+        }else{
+            return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
         }
     }
 
