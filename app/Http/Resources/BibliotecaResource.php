@@ -15,12 +15,12 @@ class BibliotecaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'user' => [
+            'use' => [
                 'id' => $this->id,
                 'name' => $this->user->name
             ],
-            'nome' => $this->nome,
-            'author' => $this->author,
+            'nome' => 'Nome '.$this->nome,
+            'author' => 'Author'.$this->author,
             'isbn' => $this->isbn,
             ];
     }

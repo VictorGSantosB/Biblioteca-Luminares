@@ -31,5 +31,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/books/categorias', [CategoriaController::class, 'index'])->name('categoria.index');
     Route::post('/book/categorias/form', [CategoriaController::class, 'store'])->name('categoria.store');
     Route::post('/book/categorias/update', [CategoriaController::class, 'update'])->name('categoria.update');
+    Route::get('/book/categorias/delete/{id}', [CategoriaController::class, 'destroy'])->name('categoria.delete');
+    Route::get('/book/categorias/delete', [CategoriaController::class, 'modalDelete'])->name('categoria.modal.delete');
+
+    
     Route::get('/logout/modal', [LoginController::class, 'modal'])->name('login.modal');
 });

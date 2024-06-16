@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BibliotecaResource;
+
 use App\Models\Book;
 use App\Models\Categoria;
-use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -14,11 +13,11 @@ class BibliotecaController extends Controller
 {
     public function index()
     {
-        $books = BibliotecaResource::collection(Book::with('user')->get());
-        $categorias = Categoria::all();
+        $books = Book::all();
+       
         return view('welcome', [
             'books' => $books,
-            'categorias' => $categorias
+            
         ]);
     }
 
@@ -47,69 +46,90 @@ class BibliotecaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nome' => 'required|string|max:255',
-            'isbn' => 'required|numeric',
-            'author' => 'required|string|max:32',
-            'descricao' => 'required|string|max:255',
-            'user_id' => 'required|numeric',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'categoria_id' => 'required|numeric'
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'nome' => 'required|string|max:255',
+        'isbn' => 'required|numeric',
+        'author' => 'required|string|max:32',
+        'descricao' => 'required|string|max:255',
+        'user_id' => 'required|numeric',
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'categoria_id' => 'required|numeric'
+    ]);
 
-        $book = new Book();
-
-        $book->nome = $validatedData['nome'];
-        $book->isbn = $validatedData['isbn'];
-        $book->author = $validatedData['author'];
-        $book->descricao = $validatedData['descricao'];
-        $book->user_id = $validatedData['user_id'];
-        $book->categoria_id = $validatedData['categoria_id'];
-
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $requestImage = $request->image;
-            $extension = $requestImage->extension();
-            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            $request->image->move(public_path('img/books'), $imageName);
-            $book->image = $imageName;
-        }
-
-        $book->save();
-
-        return redirect('/')->with('successCad', 'Livro cadastrado com sucesso!!');
+    if ($validator->fails()) {
+        return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();
     }
 
+    $book = new Book();
+
+    $book->nome = $request->input('nome');
+    $book->isbn = $request->input('isbn');
+    $book->author = $request->input('author');
+    $book->descricao = $request->input('descricao');
+    $book->user_id = $request->input('user_id');
+    $book->categoria_id = $request->input('categoria_id');
+
+    if ($request->hasFile('image') && $request->file('image')->isValid()) {
+        $requestImage = $request->image;
+        $extension = $requestImage->extension();
+        $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+        $request->image->move(public_path('img/books'), $imageName);
+        $book->image = $imageName;
+    }
+
+    $book->save();
+
+    return redirect('/')->with('successCad', 'Livro cadastrado com sucesso!!');
+}
+
+
     public function destroy($id)
-    {
+    {   
+        if(Auth::id() === 1){
         $book = Book::find($id);
         $book->delete();
         return redirect()->back()->with('successDelete', 'Livro deletado com sucesso');
+        }else{
+            return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+        }
+        
     }
 
     public function update(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nome' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categoria_id' => 'required|numeric',
             'descricao' => 'required|string'
         ]);
-
-        $data = $request->all();
-
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $requestImage = $request->image;
-            $extension = $requestImage->extension();
-            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            $request->image->move(public_path('img/books'), $imageName);
-            $data['image'] = $imageName;
+    
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator)
+                        ->withInput();
         }
-
+    
         $book = Book::find($request->id);
+    
         if ($book) {
+            $data = $request->all();
+    
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $requestImage = $request->image;
+                $extension = $requestImage->extension();
+                $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+                $request->image->move(public_path('img/books'), $imageName);
+                $data['image'] = $imageName;
+            }
+    
             $book->update($data);
+    
             return redirect()->route('dashboard')->with('successUpdate', 'Livro atualizado com sucesso!');
         } else {
             return redirect()->back()->with('error', 'Livro não encontrado.');
@@ -128,16 +148,16 @@ class BibliotecaController extends Controller
 
     public function categoria($id)
     {
-        if (Auth::check()) {
+     
             $books = Book::where('categoria_id', $id)->get();
-            $categorias = Categoria::all();
+
             $categoria = Categoria::find($id);
             return view('book.categoria', [
                 'books' => $books,
-                'categorias' => $categorias,
+
                 'categoria' => $categoria,
             ]);
-        }
+
         return redirect()->route('login.form')->with('noAuth', 'Faça login para acessar todos os recursos do sistema');
     }
 

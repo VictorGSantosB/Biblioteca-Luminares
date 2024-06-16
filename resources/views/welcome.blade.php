@@ -19,7 +19,7 @@
 
         @auth
             <div class="max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 md:text-center text-center mx-auto">
-                @if (count($books) > 0)
+                @if (!$books->isEmpty())
                     <div
                         class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 flex justify-center items-center">
                         @foreach ($books as $book)
@@ -51,14 +51,13 @@
                                     <div class="flex space-x-4">
                                         @if (Auth::id() == 1)
                                             <form method="GET" action="{{ route('book.edit', $book->id) }}">
-                                                <button type="submit" class="text-sm font-medium text-gray-900">
+                                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </button>
                                             </form>
                                             <form method="GET" action="{{ route('book.modal.delete') }}">
-                                                @csrf
                                                 <input name="id" type="hidden" value="{{ $book->id }}">
-                                                <button type="submit" class="text-sm font-medium text-red-600">
+                                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>
@@ -70,7 +69,9 @@
                     @else
                         <h1>Nao tem nenhum livro cadastrado</h1>
                 @endif
+           
             </div>
+            
             </div>
 
 

@@ -8,19 +8,19 @@
 
             {{-- Imagem do Livro --}}
             <div class="lg:col-span-1">
-                <img src="/img/books/{{ $book->image }}" alt="Livro" class="w-full h-[400px] object-cover object-center rounded-lg">
+                <img src="/img/books/{{ $book->image }}" alt="Imagem do Livro" class="w-full h-[400px] object-cover object-center rounded-lg">
             </div>
 
             {{-- Detalhes do Livro --}}
             <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                 <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ $book->nome }}</h1>
-                <h2 class="text-3xl tracking-tight text-gray-900">ISBN: {{ $book->isbn }}</h2>
+                <h2 class="text-lg tracking-tight text-gray-900">ISBN: {{ $book->isbn }}</h2>
                 <div class="mt-6">
-                    <h2 class="text-3xl font-medium text-gray-900">Descrição</h2>
+                    <h2 class="text-lg font-medium text-gray-900">Descrição</h2>
                     <p class="mt-2 text-base text-gray-600">{{ $book->descricao }}</p>
                 </div>
                 <div class="mt-6">
-                    <h2 class="text-3xl font-medium text-gray-900">Categoria</h2>
+                    <h2 class="text-lg font-medium text-gray-900">Categoria</h2>
                     <p class="mt-2 text-base text-gray-600">{{ $book->categoria->nome }}</p>
                 </div>
             </div>

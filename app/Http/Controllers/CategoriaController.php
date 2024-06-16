@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CategoriaResource;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 class CategoriaController extends Controller
 {
@@ -12,7 +13,7 @@ class CategoriaController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   $categorias = CategoriaResource::collection(Categoria::with('books')->get());
+    {   $categorias = Categoria::all();
         return view('categorias.categorias', [
             'categorias' => $categorias
         ]);
@@ -66,11 +67,17 @@ class CategoriaController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request)
-    {
-        // Validar os dados recebidos
-        $request->validate([
+{
+    if ($request->id) {
+        $validator = Validator::make($request->all(), [
             'nome' => 'required|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         $categoria = Categoria::findOrFail($request->id);
 
@@ -80,12 +87,35 @@ class CategoriaController extends Controller
 
         return redirect()->route('categoria.index')->with('succesCategoriaUpdate', 'Categoria editada com sucesso');
     }
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        if(Auth::id() === 1){
+            $categoria = Categoria::find($id);
+            $categoria->delete();
+            return redirect()->back()->with('successDelete', 'Categoria deletada com sucesso');
+            }else{
+                return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+            }
+    }
+
+
+    public function modalDelete(Request $request)
+    {   if(Auth::id() === 1){
+        
+        if ($request->id) {
+            $id = $request->id;
+            return redirect()->back()->with('deleteCategoria', $id);
+        }else{
+            return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+        }
+    }else{
+        return redirect()->back()->with('admInvalid', 'Você não tem permissão para acessar essa pagina');
+    }
     }
 }

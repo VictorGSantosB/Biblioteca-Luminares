@@ -25,7 +25,9 @@
     <header class="bg-white shadow-md w-[100%]">
         <nav class="flex justify-between items-center w-[92%] mx-auto">
             <div>
-                <img class="cursor-pointer" src="{{ asset('img/NAVBARLOGO.png') }}" alt="..." width="80">
+                <a href="/">
+                    <img class="cursor-pointer" src="{{ asset('img/NAVBARLOGO.png') }}" alt="..." width="80">
+                </a>
             </div>
             <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[20vh] left-0 top-[-100%] md:w-auto w-full flex px-5 z-40">
                 <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 my-5">
@@ -162,7 +164,24 @@
 @endif
 
 
-
+@if (session('deleteCategoria'))
+    <script>
+        Swal.fire({
+            title: "Você tem certeza?",
+            text: "Você tem certeza disso?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim,quero deletar",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('categoria.delete', Session::get('deleteCategoria')) }}";
+            }
+        });
+    </script>
+@endif
 @if (session('delete'))
     <script>
         Swal.fire({
@@ -253,6 +272,9 @@
                         <input required
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             name="nome" id="nome" type="text" placeholder="Nome da Categoria">
+                            @error('nome')
+                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                            @enderror
                     </div>
                     <div class="flex justify-center pt-4">
                         <button
@@ -280,12 +302,16 @@
 
     function onToggleMenu(e) {
         e.name = e.name === 'menu' ? 'close' : 'menu'
-        navLinks.classList.toggle('top-[12%]')
+        navLinks.classList.toggle('top-[10%]')
     }
 
     function openModal() {
         document.getElementById('categoryModal').classList.remove('hidden');
     }
+
+    @if ($errors->any())
+        document.getElementById('categoryModal').classList.remove('hidden');
+    @endif
 
     function closeModal() {
         document.getElementById('categoryModal').classList.add('hidden');
