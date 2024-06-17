@@ -10,7 +10,6 @@
     <!-- Stylesheets -->
     <link rel="stylesheet"
         href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rosario:ital,wght@0,300..700;1,300..700&display=swap">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
